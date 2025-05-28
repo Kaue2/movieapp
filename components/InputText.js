@@ -1,7 +1,7 @@
 import { View, Text, TextInput, StyleSheet } from "react-native"
 
 
-export default function InputText({text, placeholder, password}){
+export default function InputText({text, placeholder, password, setValue}){
     return (
         <View style={style.container}>
             <Text style={style.TextStyle}>
@@ -11,6 +11,7 @@ export default function InputText({text, placeholder, password}){
                 style={style.input}
                 placeholder={placeholder}
                 secureTextEntry={password} 
+                onChange={(e) => setValue(e.target.value)}
             />
         </View>
     )
