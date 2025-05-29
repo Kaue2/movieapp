@@ -2,6 +2,7 @@ import React, { createContext, useState } from "react";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebaseConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const UserContext = createContext();
 
@@ -19,7 +20,8 @@ export const UserProvider = ({ children }) => {
 
       if (docSnap.exists()) {
         const userData = docSnap.data();
-        return userData;
+        await AsyncStorage.setItem('user', JSON.stringify(userData));
+        navigation.navigate('main');
       }
     } catch (error) {
       console.log("Erro ao criar conta:", error);
@@ -47,7 +49,10 @@ export const UserProvider = ({ children }) => {
 
       const userDoc = await getDoc(doc(db, "users", user.uid));
 
-      return userDoc.data();
+      const userData = userDoc.data();
+      await AsyncStorage.setItem('user', JSON.stringify(userData));
+      navigation.navigate("Profile");
+
     } catch (error) {
       console.log("Erro ao criar conta:", error);
     }
