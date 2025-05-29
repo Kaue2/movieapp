@@ -1,17 +1,17 @@
 import React, { createContext, useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebaseConfig";
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const loginFunc = async (email, password) => {
+  const loginFunc = async (email, password, navigation) => {
     try {
       if (email === "" || password === "") {
         throw error;
       }
-      const userCredential = await signInWithEmailAndPassword(email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
       const docRef = doc(db, "users", user.uid);
@@ -21,10 +21,12 @@ export const UserProvider = ({ children }) => {
         const userData = docSnap.data();
         return userData;
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log("Erro ao criar conta:", error);
+    }
   };
 
-  const sinupFunc = async (email, password, nickname) => {
+  const sinupFunc = async (email, password, nickname, navigation) => {
     try {
       if (email === "" || password === "" || nickname === "") {
         throw error;
@@ -36,16 +38,19 @@ export const UserProvider = ({ children }) => {
         password
       );
       const user = userCredential.user;
+      console.log("User: ", user);
 
       await setDoc(doc(db, "users", user.uid), {
         name: email,
         nickname: nickname,
       });
 
-      const userDoc = await getDoc(doc(db, "users", userCredential.uid));
+      const userDoc = await getDoc(doc(db, "users", user.uid));
 
-      return userDoc;
-    } catch (error) {}
+      return userDoc.data();
+    } catch (error) {
+      console.log("Erro ao criar conta:", error);
+    }
   };
 
   const exp = {
@@ -53,5 +58,9 @@ export const UserProvider = ({ children }) => {
     sinupFunc: sinupFunc,
   };
 
-  return <UserContext.Provider value={exp}>{children}</UserContext.Provider>;
+  return(
+    <UserContext.Provider value={exp}>
+      {children}
+    </UserContext.Provider>
+  ) 
 };

@@ -13,11 +13,10 @@ export default function CreateAccount({navigation}){
 
   const handleSinup = async () => {
     try {
-      const respo = sinupFunc(email, password, nickname);
-      console.log(respo);
+      const respo = await sinupFunc(email, password, nickname, navigation);
     }
     catch(error){
-
+      console.log("Erro ao criar conta:", error);
     }
   }
 

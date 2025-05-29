@@ -12,9 +12,7 @@ export default function Login({navigation}){
 
   const handleLogin = async () => {
     try{
-      //const resp = loginFunc(email, password);
-      await loginFunc(email, password);
-      //console.log(resp)
+      const resp = await loginFunc(email, password, navigation);
     }
     catch(error){
 
@@ -33,13 +31,15 @@ export default function Login({navigation}){
               text={"Email"}
               placeholder={"exemplo123@gmail.com"}
               password={false}
+              setValue={setEmail}
             />
             <InputText
               text={"Senha"}
               placeholder={"*********"}
               password={true}
+              setValue={setPassword}
             />
-            <CustomBtn tittle={"confirmar"}/>
+            <CustomBtn tittle={"confirmar"} action={handleLogin}/>
           </View>
         </View>
         <View style={{ justifyContent: "center", display: 'flex', flexDirection: 'row', gap: 2 }}> 
