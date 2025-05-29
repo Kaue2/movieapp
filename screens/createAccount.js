@@ -1,29 +1,20 @@
 import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from "../firebaseConfig";
-import { setDoc, doc } from "firebase/firestore";
+import React, { useContext, useState } from "react";
 import InputText from "../components/InputText";
 import CustomBtn from "../components/CustomBtn";
+import { UserContext } from "../context/UserContext";
 
 export default function CreateAccount({navigation}){
+  const { sinupFunc } = useContext(UserContext);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nickname, setNickname] = useState('');
 
   const handleSinup = async () => {
     try {
-      if(email === '' || password === '' || nickname === ''){
-        throw error;
-      }
-
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      await setDoc(doc(db, "users", user.uid), {
-        name: email, 
-        nickname: nickname
-      });
+      const respo = sinupFunc(email, password, nickname);
+      console.log(respo);
     }
     catch(error){
 

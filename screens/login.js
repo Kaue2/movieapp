@@ -1,33 +1,23 @@
 import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import React, { useState} from 'react';
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "../firebaseConfig";
+import React, { useState, useContext} from 'react';
 import InputText from "../components/InputText";
 import CustomBtn from "../components/CustomBtn";
+import { UserContext } from "../context/UserContext";
 
 export default function Login({navigation}){
+  const { loginFunc } = useContext(UserContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const login = async () => {
+  const handleLogin = async () => {
     try{
-      if(email === '' || password === ''){
-        throw error;
-      }
-      const userCredential = await signInWithEmailAndPassword(email, password);
-      const user = userCredential.user;
-
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-
-      if(docSnap.exists()){
-        const userData = docSnap.data();
-        // salvar as informações no contexto
-      }
+      //const resp = loginFunc(email, password);
+      await loginFunc(email, password);
+      //console.log(resp)
     }
     catch(error){
-      
+
     }
   }
 
