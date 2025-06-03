@@ -11,7 +11,7 @@ export default function InputText({text, placeholder, password, setValue}){
                 style={style.input}
                 placeholder={placeholder}
                 secureTextEntry={password} 
-                onChange={(e) => setValue(e.target.value)}
+                onChangeText={setValue}
             />
         </View>
     )
