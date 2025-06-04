@@ -59,7 +59,10 @@ export const UserProvider = ({ children }) => {
       const userDoc = await getDoc(doc(db, "users", user.uid));
 
       const userData = userDoc.data();
-      await AsyncStorage.setItem("user", JSON.stringify(userData));
+      const name = userData.name;
+      const nikcname = userData.nickname;
+      await AsyncStorage.setItem("name", JSON.stringify(name));
+      await AsyncStorage.setItem("nickname", JSON.stringify(nikcname));
       await AsyncStorage.setItem("userRef", JSON.stringify(user.uid));
       navigation.navigate("Profile");
     } catch (error) {
