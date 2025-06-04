@@ -64,7 +64,7 @@ export const UserProvider = ({ children }) => {
       await AsyncStorage.setItem("name", JSON.stringify(name));
       await AsyncStorage.setItem("nickname", JSON.stringify(nikcname));
       await AsyncStorage.setItem("userRef", JSON.stringify(user.uid));
-      navigation.navigate("Profile");
+      navigation.navigate("main");
     } catch (error) {
       console.log("Erro ao criar conta:", error);
     }
