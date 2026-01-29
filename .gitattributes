@@ -1,0 +1,4 @@
+*.js linguist-vendored
+*.min.js linguist-vendored
+node_modules/* linguist-vendored
+wwwroot/* linguist-vendored
